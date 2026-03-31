@@ -1,4 +1,4 @@
-:root { --bg:#000; --fg:#fff; --accent:#c9a86a; }
+:root { --bg:#000; --fg:#fff; --accent:#c9a86a; --muted:#9e9e9e; }
 
 html, body {
   margin:0; height:100%;
@@ -22,7 +22,7 @@ html, body {
   color:#fff;
 }
 
-/* Cocktailname (Gold) */
+/* Cocktailname */
 #cocktail {
   margin-top:3vh; max-width:80%;
   font-size:3vw; line-height:1.2;
@@ -30,12 +30,20 @@ html, body {
 }
 
 /* Historie */
-#history { margin-top:4vh; font-size:1.5vw; opacity:.5; letter-spacing:.1em; }
+#history {
+  margin-top:4vh;
+  font-size:1.5vw;
+  opacity:.5;
+  letter-spacing:.1em;
+}
 
 /* Hinweis */
-#hint { position:absolute; bottom:3vh; font-size:1vw; opacity:.35; pointer-events:none; }
+#hint {
+  position:absolute; bottom:3vh;
+  font-size:1vw; opacity:.35; pointer-events:none;
+}
 
-/* Schnapszahl-Effekt */
+/* Schnapszahl */
 .schnapszahl {
   color:var(--accent) !important;
   animation:glowPulse 1.2s ease-in-out infinite;
@@ -46,11 +54,96 @@ html, body {
   50%     { transform:scale(1.05); text-shadow:0 0 40px var(--accent),0 0 80px var(--accent); }
 }
 
-/* Effekte-Canvas klickt nicht */
-#confetti { position:fixed; inset:0; z-index:1; pointer-events:none; }
-#wrap { position:relative; z-index:2; }
+/* Canvas */
+#confetti {
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+}
+#wrap {
+  position:relative; z-index:2;
+}
 
-/* Overlay */
+/* Login Overlay */
+.login-overlay {
+  position:fixed; inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.82);
+  z-index:10;
+  padding:24px;
+}
+.login-overlay.show {
+  display:flex;
+}
+
+.login-card {
+  width:min(92vw, 460px);
+  background:#0b0b0b;
+  border:1px solid #1d1d1d;
+  border-radius:20px;
+  box-shadow:0 12px 60px rgba(0,0,0,.6);
+  padding:26px 22px;
+}
+
+.login-title {
+  color:var(--accent);
+  font-size:2rem;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.login-subtitle {
+  color:#cfcfcf;
+  font-size:.95rem;
+  line-height:1.5;
+  text-align:center;
+  opacity:.8;
+  margin-bottom:22px;
+}
+
+.login-label {
+  display:block;
+  margin:10px 0 8px;
+  font-size:.9rem;
+  color:#e5e5e5;
+}
+
+.login-input {
+  width:100%;
+  box-sizing:border-box;
+  border-radius:12px;
+  border:1px solid #2a2a2a;
+  background:#121212;
+  color:#fff;
+  padding:14px 14px;
+  font:inherit;
+  outline:none;
+}
+.login-input:focus {
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(201,168,106,.15);
+}
+
+.login-error {
+  min-height:22px;
+  margin-top:12px;
+  color:#ff9b9b;
+  font-size:.88rem;
+}
+
+.login-btn {
+  width:100%;
+  margin-top:10px;
+  border:none;
+  border-radius:12px;
+  padding:14px 16px;
+  background:var(--accent);
+  color:#111;
+  font:inherit;
+  cursor:pointer;
+}
+
+/* Filter Overlay */
 #overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,.65);
@@ -63,43 +156,74 @@ html, body {
 .panel {
   width: 85vw; max-width: 580px;
   background: #0b0b0b;
-  border: 1px solid #1b1b1b; border-radius: 16px;
+  border: 1px solid #1b1b1b;
+  border-radius: 16px;
   box-shadow: 0 10px 50px rgba(0,0,0,.6);
   padding: 14px 16px;
-  display: flex; flex-direction: column; gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.panel-title { text-align:center; font-size: 1.8vw; margin: 0 0 6px; }
+.panel-title {
+  text-align:center;
+  font-size: 1.8vw;
+  margin: 0 0 6px;
+}
 
 .opt {
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 12px 10px; border-radius: 10px;
-  background:#121212; border:1px solid #1e1e1e;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 12px 10px;
+  border-radius: 10px;
+  background:#121212;
+  border:1px solid #1e1e1e;
   font-size: 1.6vw;
 }
 .opt.active { opacity:.35; }
-.opt .pin {
-  width: 30px; height: 30px; border-radius: 999px;
-  border: 2px solid #444; background: transparent; cursor:pointer;
-}
-.opt .pin.pinned { border-color: var(--accent); box-shadow: 0 0 8px rgba(201,168,106,.6) inset; }
 
-.panel-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:6px; }
-.panel-actions button {
-  font-family:inherit; font-size:1.4vw;
-  padding:10px 14px; border-radius:10px;
-  border:1px solid #2a2a2a; background:#121212; color:#ddd;
+.opt .pin {
+  width: 30px; height: 30px;
+  border-radius: 999px;
+  border: 2px solid #444;
+  background: transparent;
   cursor:pointer;
 }
-.panel-actions .go { background: var(--accent); color:#111; border-color: var(--accent); }
-
-/* Unsichtbarer Reset-Hotspot (klickbar, blockiert Durchklicks) */
-#resetHotspot{
-  position:absolute; right:8px; bottom:8px;
-  width:44px; height:44px;
-  opacity:.01; z-index:5; /* über wrap, unter Overlay */
+.opt .pin.pinned {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(201,168,106,.6) inset;
 }
 
-/* Landscape-Feinschliff */
+.panel-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:6px;
+}
+.panel-actions button {
+  font-family:inherit;
+  font-size:1.4vw;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid #2a2a2a;
+  background:#121212;
+  color:#ddd;
+  cursor:pointer;
+}
+.panel-actions .go {
+  background: var(--accent);
+  color:#111;
+  border-color: var(--accent);
+}
+
+/* Reset-Hotspot */
+#resetHotspot {
+  position:absolute; right:8px; bottom:8px;
+  width:44px; height:44px;
+  opacity:.01; z-index:5;
+}
+
+/* Landscape */
 @media (orientation:landscape) {
   #cocktail { font-size:2.4vw; }
   #history  { font-size:1.2vw; }
@@ -107,4 +231,13 @@ html, body {
   .panel-title { font-size:1.6vw; }
   .opt { font-size:1.4vw; }
   .panel-actions button { font-size:1.2vw; }
+}
+
+@media (max-width: 900px) {
+  .panel-title { font-size: 1.2rem; }
+  .opt { font-size: 1rem; }
+  .panel-actions button { font-size: .95rem; }
+  #cocktail { font-size: 1.35rem; }
+  #history { font-size: .9rem; }
+  #hint { font-size: .8rem; }
 }

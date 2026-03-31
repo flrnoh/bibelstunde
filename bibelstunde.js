@@ -1,5 +1,26 @@
 /*** Bibelstunde 2.5 – JS mit perfektioniertem Filter (CodePen-ready) ***/
+const PASSWORD = "VelvetPour_27";
 
+const input = prompt("Zugangscode eingeben:");
+
+if (input !== PASSWORD) {
+  document.body.innerHTML = `
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+      background:#000;
+      color:#c9a86a;
+      font-family:Montserrat, sans-serif;
+      font-size:2rem;
+      text-align:center;
+    ">
+      Zugriff verweigert
+    </div>
+  `;
+  throw new Error("Access denied");
+}
 /*** SETTINGS ***/
 const HISTORY_SIZE = 5;
 const RESET_HOUR = 5;            // Tagesreset 05:00

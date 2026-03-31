@@ -5,17 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bibelstunde 2.5</title>
 
-  <!-- Font & CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/bibelstunde.css">
-<script src="js/bibelstunde.js"></script>
 </head>
 <body>
 
-  <!-- Effekte -->
   <canvas id="confetti"></canvas>
 
-  <!-- App -->
   <div class="wrap" id="wrap">
     <div id="number">🍸</div>
     <div id="cocktail"></div>
@@ -23,7 +19,6 @@
     <div id="hint">Tippen = Ziehung · ~1s halten = Filter</div>
   </div>
 
-  <!-- Long-Press Overlay (Filter gelten für die NÄCHSTE Ziehung) -->
   <div id="overlay" aria-hidden="true">
     <div class="panel">
       <div class="panel-title">Basis ausschließen</div>
@@ -45,10 +40,8 @@
     </div>
   </div>
 
-  <!-- Unsichtbarer Reset-Hotspot (unten rechts) -->
   <div id="resetHotspot" title="Reset"></div>
 
-  <!-- App-Logik -->
-  <script src="bibelstunde.js"></script>
+  <script src="js/bibelstunde.js"></script>
 </body>
 </html>

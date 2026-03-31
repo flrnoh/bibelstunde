@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bibelstunde 2.5</title>
+
+  <!-- Font & CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bibelstunde.css">
+</head>
+<body>
+
+  <!-- Effekte -->
+  <canvas id="confetti"></canvas>
+
+  <!-- App -->
+  <div class="wrap" id="wrap">
+    <div id="number">🍸</div>
+    <div id="cocktail"></div>
+    <div id="history"></div>
+    <div id="hint">Tippen = Ziehung · ~1s halten = Filter</div>
+  </div>
+
+  <!-- Long-Press Overlay (Filter gelten für die NÄCHSTE Ziehung) -->
+  <div id="overlay" aria-hidden="true">
+    <div class="panel">
+      <div class="panel-title">Basis ausschließen</div>
+
+      <div class="opt" data-base="Gin"><span class="label">Gin</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Rum"><span class="label">Rum</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Whiskey"><span class="label">Whiskey</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Vodka"><span class="label">Vodka</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Tequila"><span class="label">Tequila / Mezcal</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Brandy"><span class="label">Brandy / Cognac</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Liqueur"><span class="label">Likör-basiert</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Wine"><span class="label">Wermut / Sherry / Port</span><button class="pin" title="für den Abend ausschließen"></button></div>
+      <div class="opt" data-base="Bubbles"><span class="label">Champagner / Schaumwein</span><button class="pin" title="für den Abend ausschließen"></button></div>
+
+      <div class="panel-actions">
+        <button id="overlayClear">Zurücksetzen</button>
+        <button id="overlayGo" class="go">Los geht’s</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unsichtbarer Reset-Hotspot (unten rechts) -->
+  <div id="resetHotspot" title="Reset"></div>
+
+  <!-- App-Logik -->
+  <script src="bibelstunde.js"></script>
+</body>
+</html>

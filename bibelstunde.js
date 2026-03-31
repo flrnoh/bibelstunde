@@ -1,9 +1,21 @@
 /*** Bibelstunde 2.5 – JS mit perfektioniertem Filter (CodePen-ready) ***/
-const PASSWORD = "VelvetPour_27";
+const USERS = {
+  "BlockBar": "VelvetPour26",
+  "riverside2026": "VelvetPour_27"
+};
 
-const input = prompt("Zugangscode eingeben:");
+const key = params.get("key");
 
-if (input !== PASSWORD) {
+if (!USERS[key]) {
+  document.body.innerHTML = "Kein Zugang";
+  throw new Error("No user");
+}
+
+const input = prompt("Zugangscode:");
+if (input !== USERS[key]) {
+  document.body.innerHTML = "Zugriff verweigert";
+  throw new Error("Wrong password");
+}
   document.body.innerHTML = `
     <div style="
       display:flex;

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   /*** 0) LOGIN ***/
   const USERS = {
-    "woidbar2026": "GoldMix_01",
+    "BlockBar": "VelvetPour26",
     "riverside2026": "VelvetPour_27",
     "testbar123": "Bibelstunde_No5"
   };

@@ -414,7 +414,7 @@ function finishDraw(temp = []){
 
   const rec = RECIPE_BY_PAGE.get(page);
   numberEl.textContent = page;
-  cocktailEl.textContent = rec ? rec.name : "";
+  cocktailEl.textContent = rec ? rec.name.replace(/\*/g, "") : "";
 
   history.unshift(page); history = history.slice(0, HISTORY_SIZE);
   renderHistory(); saveState();

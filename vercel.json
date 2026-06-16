@@ -6,6 +6,7 @@
     { "source": "/app", "destination": "/app/index.html" }
   ],
   "redirects": [
+    { "source": "/", "destination": "/app", "permanent": false },
     { "source": "/login", "destination": "/app", "permanent": false }
   ]
 }

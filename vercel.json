@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/app", "destination": "/app/index.html" }
+  ],
+  "redirects": [
+    { "source": "/login", "destination": "/app", "permanent": false }
+  ]
+}

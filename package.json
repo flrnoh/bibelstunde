@@ -8,8 +8,7 @@
     "node": "24.x"
   },
   "scripts": {
-    "dev": "vercel dev",
-    "seed": "node scripts/seed.js"
+    "seed": "node --env-file=.env.local scripts/seed.js"
   },
   "dependencies": {
     "@upstash/redis": "^1.34.3",

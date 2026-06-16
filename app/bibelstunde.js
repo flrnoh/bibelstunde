@@ -1,18 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   /*** 0) LOGIN ***/
-  const USERS = {
-    "BlockBar": "VelvetPour26",
-    "riverside2026": "VelvetPour_27",
-    "testbar123": "Bibelstunde_No5"
-  };
-
-  const SESSION_KEY = "bibelstundeAuth";
+  const TOKEN_KEY = "bibelstundeToken";
 
   const loginOverlay = document.getElementById('loginOverlay');
   const loginForm = document.getElementById('loginForm');
   const loginUser = document.getElementById('loginUser');
   const loginPass = document.getElementById('loginPass');
   const loginError = document.getElementById('loginError');
+  const loginBtn = loginForm.querySelector('.login-btn');
 
   function showLogin() {
     loginOverlay.classList.add('show');
@@ -25,45 +20,68 @@ document.addEventListener('DOMContentLoaded', () => {
     loginOverlay.setAttribute('aria-hidden', 'true');
   }
 
-  function isAuthenticated() {
-    return sessionStorage.getItem(SESSION_KEY) === "ok";
+  function readToken() {
+    return localStorage.getItem(TOKEN_KEY);
   }
 
-  function setAuthenticated() {
-    sessionStorage.setItem(SESSION_KEY, "ok");
+  function storeToken(token) {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
+
+  function clearToken() {
+    localStorage.removeItem(TOKEN_KEY);
   }
 
   function logout() {
-    sessionStorage.removeItem(SESSION_KEY);
+    clearToken();
     showLogin();
   }
 
-  if (!isAuthenticated()) {
-    showLogin();
-  } else {
+  if (readToken()) {
     hideLogin();
+  } else {
+    showLogin();
   }
 
-  loginForm.addEventListener('submit', (e) => {
+  loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const user = loginUser.value.trim();
-    const pass = loginPass.value.trim();
+    const bar = loginUser.value.trim();
+    const pass = loginPass.value;
 
-    if (!user || !pass) {
+    if (!bar || !pass) {
       loginError.textContent = "Bitte Zugangscode und Passwort eingeben.";
       return;
     }
 
-    if (!USERS[user] || USERS[user] !== pass) {
-      loginError.textContent = "Zugangscode oder Passwort ist falsch.";
-      loginPass.value = "";
-      return;
-    }
-
     loginError.textContent = "";
-    setAuthenticated();
-    hideLogin();
+    loginBtn.disabled = true;
+    const originalLabel = loginBtn.textContent;
+    loginBtn.textContent = "Prüfe…";
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bar, pass }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || !data.ok || !data.token) {
+        loginError.textContent = data.error || "Zugangscode oder Passwort ist falsch.";
+        loginPass.value = "";
+        return;
+      }
+
+      storeToken(data.token);
+      hideLogin();
+    } catch (err) {
+      loginError.textContent = "Netzwerkfehler. Bitte erneut versuchen.";
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = originalLabel;
+    }
   });
 
   /*** SETTINGS ***/
@@ -564,7 +582,6 @@ document.addEventListener('DOMContentLoaded', () => {
   resetHotspot.addEventListener('click', () => {
     if (confirm("Alles zurücksetzen und neuen Tag beginnen?")) {
       localStorage.clear();
-      sessionStorage.removeItem(SESSION_KEY);
       numberEl.textContent = "🍸";
       cocktailEl.textContent = "";
       history = [];

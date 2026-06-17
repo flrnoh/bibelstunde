@@ -32,3 +32,19 @@ npm run dev                  # vercel dev — App auf http://localhost:3000/app
    vercel env pull .env.local
    node --env-file=.env.local scripts/seed.js
    ```
+
+## Bezahl-Pipeline (PR 3)
+
+1. **Stripe**: Konto + Product „Bibelstunde Lifetime" 49,99 € one-time → Price ID merken.
+   ENV-Vars im Vercel-Projekt:
+   - `STRIPE_SECRET_KEY` (sk_test_… / sk_live_…)
+   - `STRIPE_PRICE_ID` (price_…)
+   - `STRIPE_WEBHOOK_SECRET` (whsec_…, aus Webhook-Endpoint)
+2. **Stripe Webhook anlegen**: Endpoint URL `https://<deine-domain>/api/stripe-webhook`,
+   Event `checkout.session.completed`.
+3. **Brevo**: Sender-E-Mail verifizieren, API-Key generieren.
+   - `BREVO_API_KEY`
+   - `BREVO_SENDER_EMAIL` (verifizierter Sender)
+4. **Optional**: `APP_BASE_URL=https://bibelstunde.app` setzen, sobald Domain live.
+5. Test-Mode E2E mit Stripe Test-Karte (4242 4242 4242 4242),
+   dann Stripe-Mode auf Live umstellen.

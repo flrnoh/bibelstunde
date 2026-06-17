@@ -28,7 +28,7 @@
       <div class="nav-actions">
         <span class="lang"><a href="/">DE</a><span class="active">EN</span></span>
         <a class="nav-login" href="/app">Login</a>
-        <a class="btn btn-primary" href="#buy" style="padding:10px 16px;font-size:14px;">Buy</a>
+        <button class="btn btn-primary" data-buy style="padding:10px 16px;font-size:14px;">Buy</button>
       </div>
     </div>
   </nav>
@@ -39,7 +39,7 @@
       <h1>Roll.<br/><span class="accent">Open.</span> Mix.</h1>
       <p class="hero-sub">The app rolls a page number, the book behind the counter opens to it — and the recipe is right there. 200+ classics from <em>Cocktailian — Das Handbuch der Bar</em>. One tap rolls, a long press filters. Built for the tablet at the bar.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#buy">Buy now for €49.99</a>
+        <button class="btn btn-primary" data-buy>Buy now for €49.99</button>
         <a class="btn btn-ghost" href="#how">How it works</a>
       </div>
       <div class="hero-art">
@@ -121,8 +121,8 @@
           <li>Updates &amp; bugfixes included</li>
           <li>Companion to <em>Cocktailian — Das Handbuch der Bar</em></li>
         </ul>
-        <a class="btn btn-primary" href="mailto:flogge@rockthehill.de?subject=Buy%20Bibelstunde&amp;body=I'd%20like%20to%20buy%20Bibelstunde%20for%20my%20bar.%20Bar%20name%3A%20" style="width:100%;">Buy now</a>
-        <p style="margin:14px 0 0;color:var(--muted);font-size:12.5px;">Stripe checkout launches in the next few days — for now, email works.</p>
+        <button class="btn btn-primary" data-buy style="width:100%;">Buy now</button>
+        <p style="margin:14px 0 0;color:var(--muted);font-size:12.5px;">Secure checkout via Stripe — bar code &amp; password arrive by email.</p>
       </div>
     </div>
   </section>
@@ -172,6 +172,28 @@
       </div>
     </div>
   </footer>
+
+  <div class="modal" id="buyModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="buyTitle">
+      <h3 class="modal-title" id="buyTitle">Buy Bibelstunde</h3>
+      <p class="modal-sub">€49.99 one-time &middot; access by email within minutes</p>
+      <form id="buyForm" autocomplete="off">
+        <label class="modal-label" for="buyBar">Bar name (becomes your access code)</label>
+        <input class="modal-input" id="buyBar" type="text" placeholder="e.g. RiversideBar" required minlength="2" maxlength="32" pattern="[a-zA-Z0-9_-]{2,32}" />
+        <div class="modal-hint">2–32 characters, letters, numbers, _ or -</div>
+
+        <label class="modal-label" for="buyEmail">Email (access &amp; receipt)</label>
+        <input class="modal-input" id="buyEmail" type="email" placeholder="you@yourbar.com" required />
+
+        <div class="modal-error" id="buyError"></div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn modal-close" data-buy-close>Cancel</button>
+          <button type="submit" class="btn btn-primary" id="buySubmit">Continue to payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script src="/landing.js" defer></script>
 </body>

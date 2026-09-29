@@ -40,11 +40,13 @@ npm run dev                  # vercel dev — App auf http://localhost:3000/app
    - `STRIPE_SECRET_KEY` (sk_test_… / sk_live_…)
    - `STRIPE_PRICE_ID` (price_…)
    - `STRIPE_WEBHOOK_SECRET` (whsec_…, aus Webhook-Endpoint)
-2. **Stripe Webhook anlegen**: Endpoint URL `https://<deine-domain>/api/stripe-webhook`,
+2. **Stripe Webhook anlegen**: Endpoint URL `https://bibelstunde.app/api/stripe-webhook`,
    Event `checkout.session.completed`.
 3. **Brevo**: Sender-E-Mail verifizieren, API-Key generieren.
    - `BREVO_API_KEY`
    - `BREVO_SENDER_EMAIL` (verifizierter Sender)
-4. **Optional**: `APP_BASE_URL=https://bibelstunde.app` setzen, sobald Domain live.
+4. **Domain**: `bibelstunde.app` ist registriert und dem Vercel-Projekt zugewiesen.
+   `APP_BASE_URL=https://bibelstunde.app` ist als Production-ENV-Var gesetzt
+   (Stripe-Redirects + Login-Link in Mails).
 5. Test-Mode E2E mit Stripe Test-Karte (4242 4242 4242 4242),
    dann Stripe-Mode auf Live umstellen.

@@ -35,7 +35,7 @@ npm run dev                  # vercel dev — App auf http://localhost:3000/app
 
 ## Bezahl-Pipeline (PR 3)
 
-1. **Stripe**: Konto + Product „Bibelstunde Lifetime" 49,99 € one-time → Price ID merken.
+1. **Stripe**: Konto + Product „Bibelstunde Lifetime" 9,99 € one-time → Price ID merken.
    ENV-Vars im Vercel-Projekt:
    - `STRIPE_SECRET_KEY` (sk_test_… / sk_live_…)
    - `STRIPE_PRICE_ID` (price_…)

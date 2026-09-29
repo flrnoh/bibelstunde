@@ -35,19 +35,40 @@ npm run dev                  # vercel dev — App auf http://localhost:3000/app
 
 ## Bezahl-Pipeline (PR 3)
 
-1. **Stripe**: Konto + Product „Bibelstunde Lifetime" 49,99 € one-time → Price ID merken.
+1. **Stripe**: Konto + Product „Bibelstunde Lifetime" 9,99 € one-time → Price ID merken.
    ENV-Vars im Vercel-Projekt:
    - `STRIPE_SECRET_KEY` (sk_test_… / sk_live_…)
    - `STRIPE_PRICE_ID` (price_…)
    - `STRIPE_WEBHOOK_SECRET` (whsec_…, aus Webhook-Endpoint)
-2. **Stripe Webhook anlegen**: Endpoint URL `https://<deine-domain>/api/stripe-webhook`,
-   Event `checkout.session.completed`.
+2. **Stripe Webhook anlegen**: Endpoint URL `https://bibelstunde.vercel.app/api/stripe-webhook`,
+   Event `checkout.session.completed`. (Sobald eine Custom-Domain live ist,
+   Endpoint-URL auf `https://<domain>/api/stripe-webhook` umstellen.)
 3. **Brevo**: Sender-E-Mail verifizieren, API-Key generieren.
    - `BREVO_API_KEY`
    - `BREVO_SENDER_EMAIL` (verifizierter Sender)
+   - `ALERT_EMAIL` (optional): Empfänger für Alarm-Mails, wenn eine **bezahlte**
+     Bestellung nicht provisioniert werden kann (Bar-Name kurz vor Zahlung vergeben,
+     fehlende Metadaten, Provisioning-Fehler). Fällt ohne Wert auf `BREVO_SENDER_EMAIL` zurück.
 4. **Optional**: `APP_BASE_URL=https://bibelstunde.app` setzen, sobald Domain live.
 5. Test-Mode E2E mit Stripe Test-Karte (4242 4242 4242 4242),
    dann Stripe-Mode auf Live umstellen.
+
+### Webhook im Dashboard prüfen
+
+Stripe Dashboard → **Developers → Webhooks** → den Endpoint öffnen und abgleichen:
+
+- **Endpoint-URL** = `https://bibelstunde.vercel.app/api/stripe-webhook`
+  (aktuell die einzige Production-Domain; `bibelstunde.app` ist noch nicht live).
+- **Listening for** enthält `checkout.session.completed` (das einzige Event,
+  das `api/stripe-webhook.js` verarbeitet — alle anderen werden mit `200 ignored`
+  quittiert).
+- **Signing secret** (`whsec_…`) stimmt mit `STRIPE_WEBHOOK_SECRET` im
+  Vercel-Projekt überein.
+- Im richtigen **Mode** angelegt (Test-Webhook mit `sk_test_…`, Live-Webhook mit
+  `sk_live_…`) — Test- und Live-Webhooks haben unterschiedliche Signing Secrets.
+
+Erreichbarkeit ohne Dashboard-Zugriff prüfbar: ein `GET` auf die URL muss
+`405 Method not allowed`, ein `POST` ohne gültige Signatur `400` liefern.
 
 ## Kompletter Testkauf (E2E)
 

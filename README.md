@@ -48,3 +48,23 @@ npm run dev                  # vercel dev — App auf http://localhost:3000/app
 4. **Optional**: `APP_BASE_URL=https://bibelstunde.app` setzen, sobald Domain live.
 5. Test-Mode E2E mit Stripe Test-Karte (4242 4242 4242 4242),
    dann Stripe-Mode auf Live umstellen.
+
+## Kompletter Testkauf (E2E)
+
+`scripts/e2e-purchase.js` fährt die ganze Pipeline in **einem** Lauf durch und
+prüft jede Stufe: Checkout → Webhook → Bar in KV → Mail → Login. Es ruft die
+echten Handler (`api/*`) und `lib/*` auf, ist also ein echter Integrationstest,
+keine Nachbildung.
+
+```bash
+vercel env pull .env.local   # Test-Mode-Keys (sk_test_…, price_…, whsec_…) laden
+npm install
+npm run e2e                          # voller Lauf, verschickt echte Brevo-Mail
+npm run e2e -- --email=du@example.de # Mail an ein echtes Postfach schicken
+npm run e2e -- --no-mail             # Brevo-Aufruf stubben (keine echte Mail)
+npm run e2e -- --keep                # angelegte Bar in KV behalten (kein Cleanup)
+```
+
+Der Lauf legt eine Wegwerf-Bar `e2e-<timestamp>` an, verifiziert, dass das
+Passwort aus der Mail wirklich einloggt, und räumt die Bar danach wieder auf.
+Läuft nur mit `sk_test_`-Keys — bei Live-Keys bricht das Skript bewusst ab.

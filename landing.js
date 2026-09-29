@@ -35,6 +35,8 @@
   const form = document.getElementById('buyForm');
   const barInput = document.getElementById('buyBar');
   const emailInput = document.getElementById('buyEmail');
+  const termsInput = document.getElementById('buyTerms');
+  const withdrawalInput = document.getElementById('buyWithdrawal');
   const errorEl = document.getElementById('buyError');
   const submitBtn = document.getElementById('buySubmit');
   const T = isEN
@@ -76,6 +78,8 @@
       bar: barInput.value.trim(),
       email: emailInput.value.trim(),
       locale: isEN ? 'en' : 'de',
+      consentTerms: !!(termsInput && termsInput.checked),
+      consentWithdrawal: !!(withdrawalInput && withdrawalInput.checked),
     };
 
     submitBtn.disabled = true;

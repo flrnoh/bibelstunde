@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
 
-  const { bar, email, locale } = req.body ?? {};
+  const { bar, email, locale, consentTerms, consentWithdrawal } = req.body ?? {};
 
   if (typeof bar !== 'string' || !BAR_RE.test(bar.trim())) {
     return res.status(400).json({
@@ -28,6 +28,12 @@ export default async function handler(req, res) {
   }
   if (typeof email !== 'string' || !EMAIL_RE.test(email.trim())) {
     return res.status(400).json({ ok: false, error: 'Bitte eine gültige E-Mail angeben.' });
+  }
+  if (consentTerms !== true || consentWithdrawal !== true) {
+    return res.status(400).json({
+      ok: false,
+      error: 'Bitte AGB, Widerrufsbelehrung und den Hinweis zur sofortigen Bereitstellung bestätigen.',
+    });
   }
 
   const barName = bar.trim();
@@ -47,6 +53,15 @@ export default async function handler(req, res) {
   }
 
   const base = baseUrl(req);
+  const consentAt = new Date().toISOString();
+  const metadata = {
+    bar: barName,
+    email: customerEmail,
+    locale: lang,
+    consent_terms: 'true',
+    consent_withdrawal: 'true',
+    consent_at: consentAt,
+  };
 
   try {
     const session = await stripe().checkout.sessions.create({
@@ -57,10 +72,8 @@ export default async function handler(req, res) {
       locale: lang === 'en' ? 'en' : 'de',
       success_url: `${base}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/${lang === 'en' ? 'en' : ''}#kauf`,
-      metadata: { bar: barName, email: customerEmail, locale: lang },
-      payment_intent_data: {
-        metadata: { bar: barName, email: customerEmail, locale: lang },
-      },
+      metadata,
+      payment_intent_data: { metadata },
     });
 
     return res.status(200).json({ ok: true, url: session.url });

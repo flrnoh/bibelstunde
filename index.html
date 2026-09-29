@@ -185,6 +185,8 @@
       <div>© 2026 Florian Obermeier</div>
       <div class="footer-links">
         <a href="/app">App-Login</a>
+        <a href="/agb">AGB</a>
+        <a href="/widerruf">Widerruf</a>
         <a href="mailto:flogge@rockthehill.de">Kontakt</a>
       </div>
     </div>
@@ -201,6 +203,17 @@
 
         <label class="modal-label" for="buyEmail">E-Mail (Zugang &amp; Beleg)</label>
         <input class="modal-input" id="buyEmail" type="email" placeholder="du@deinebar.de" required />
+
+        <div class="modal-consent">
+          <label class="modal-check">
+            <input type="checkbox" id="buyTerms" required />
+            <span>Ich habe die <a href="/agb" target="_blank" rel="noopener">AGB</a> und die <a href="/widerruf" target="_blank" rel="noopener">Widerrufsbelehrung</a> gelesen und akzeptiere sie.</span>
+          </label>
+          <label class="modal-check">
+            <input type="checkbox" id="buyWithdrawal" required />
+            <span>Ich verlange ausdrücklich, dass mit der Bereitstellung des Zugangs sofort begonnen wird. Mir ist bekannt, dass ich mit Beginn der Ausführung mein Widerrufsrecht verliere.</span>
+          </label>
+        </div>
 
         <div class="modal-error" id="buyError"></div>
 

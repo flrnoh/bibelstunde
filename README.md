@@ -45,6 +45,9 @@ npm run dev                  # vercel dev — App auf http://localhost:3000/app
 3. **Brevo**: Sender-E-Mail verifizieren, API-Key generieren.
    - `BREVO_API_KEY`
    - `BREVO_SENDER_EMAIL` (verifizierter Sender)
+   - `ALERT_EMAIL` (optional): Empfänger für Alarm-Mails, wenn eine **bezahlte**
+     Bestellung nicht provisioniert werden kann (Bar-Name kurz vor Zahlung vergeben,
+     fehlende Metadaten, Provisioning-Fehler). Fällt ohne Wert auf `BREVO_SENDER_EMAIL` zurück.
 4. **Optional**: `APP_BASE_URL=https://bibelstunde.app` setzen, sobald Domain live.
 5. Test-Mode E2E mit Stripe Test-Karte (4242 4242 4242 4242),
    dann Stripe-Mode auf Live umstellen.

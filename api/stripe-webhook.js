@@ -2,9 +2,24 @@ import { stripe, readRawBody } from '../lib/stripe.js';
 import { getBar, putBar, deleteBar } from '../lib/kv.js';
 import { hashPassword } from '../lib/hash.js';
 import { generatePassword } from '../lib/passgen.js';
-import { sendCredentialsMail } from '../lib/brevo.js';
+import { sendCredentialsMail, sendAlertMail } from '../lib/brevo.js';
 
 export const config = { api: { bodyParser: false } };
+
+function formatAmount(session) {
+  if (typeof session.amount_total !== 'number') return 'unbekannt';
+  return `${(session.amount_total / 100).toFixed(2)} ${(session.currency || '').toUpperCase()}`.trim();
+}
+
+// A completed checkout means the customer HAS paid. Every failure below leaves
+// them without access, so raise a real alarm — never rely on the log alone.
+async function alertOps(subject, lines) {
+  try {
+    await sendAlertMail({ subject, lines });
+  } catch (alertErr) {
+    console.error('ALERT DELIVERY FAILED — paid order needs manual attention:', alertErr.message, { subject, lines });
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -42,6 +57,15 @@ export default async function handler(req, res) {
 
   if (!barName || !email) {
     console.error('Webhook missing metadata bar/email', { id: session.id, meta });
+    await alertOps('⚠️ Bibelstunde: Zahlung ohne Zuordnung — manuelles Provisioning nötig', [
+      'Ein Kunde hat bezahlt, aber die Checkout-Session hat keine bar/email-Metadaten.',
+      `Session:       ${session.id}`,
+      `Betrag:        ${formatAmount(session)}`,
+      `E-Mail (Stripe): ${session.customer_email || 'unbekannt'}`,
+      `PaymentIntent: ${session.payment_intent || 'unbekannt'}`,
+      '',
+      'Bitte Zugang manuell anlegen oder Zahlung erstatten.',
+    ]);
     return res.status(200).json({ received: true, error: 'missing metadata, manual provisioning needed' });
   }
 
@@ -49,6 +73,16 @@ export default async function handler(req, res) {
     const existing = await getBar(barName);
     if (existing && existing.source !== `stripe:${session.id}`) {
       console.error('Bar name already taken at provision time', { barName, sessionId: session.id });
+      await alertOps('⚠️ Bibelstunde: Bar-Name vergeben — Kunde hat bezahlt, aber nichts erhalten', [
+        `Der Bar-Name „${barName}" war bei Zahlungseingang bereits vergeben (Race Condition`,
+        'zwischen Checkout-Start und Zahlung). Der Kunde hat bezahlt, aber KEINE Zugangsdaten erhalten.',
+        `Session:       ${session.id}`,
+        `Betrag:        ${formatAmount(session)}`,
+        `Kunde:         ${email}`,
+        `PaymentIntent: ${session.payment_intent || 'unbekannt'}`,
+        '',
+        'Bitte einen anderen Namen mit dem Kunden klären und manuell anlegen, oder die Zahlung erstatten.',
+      ]);
       return res.status(200).json({ received: true, error: 'bar already provisioned, manual review needed' });
     }
     if (existing) {
@@ -80,6 +114,17 @@ export default async function handler(req, res) {
     return res.status(200).json({ received: true, provisioned: barName });
   } catch (err) {
     console.error('Provisioning failed:', err);
+    await alertOps('⚠️ Bibelstunde: Provisioning fehlgeschlagen — Kunde hat bezahlt', [
+      'Nach erfolgreicher Zahlung ist das Provisioning fehlgeschlagen.',
+      `Bar:           ${barName}`,
+      `Kunde:         ${email}`,
+      `Session:       ${session.id}`,
+      `Betrag:        ${formatAmount(session)}`,
+      `PaymentIntent: ${session.payment_intent || 'unbekannt'}`,
+      `Fehler:        ${err.message || String(err)}`,
+      '',
+      'Stripe wiederholt den Webhook ggf. automatisch. Bleibt der Fehler, bitte manuell anlegen oder erstatten.',
+    ]);
     return res.status(500).json({ received: true, error: 'provisioning failed' });
   }
 }

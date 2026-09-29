@@ -185,6 +185,8 @@
       <div>© 2026 Florian Obermeier</div>
       <div class="footer-links">
         <a href="/app">App login</a>
+        <a href="/en/terms">Terms</a>
+        <a href="/en/withdrawal">Withdrawal</a>
         <a href="mailto:flogge@rockthehill.de">Contact</a>
       </div>
     </div>
@@ -201,6 +203,17 @@
 
         <label class="modal-label" for="buyEmail">Email (access &amp; receipt)</label>
         <input class="modal-input" id="buyEmail" type="email" placeholder="you@yourbar.com" required />
+
+        <div class="modal-consent">
+          <label class="modal-check">
+            <input type="checkbox" id="buyTerms" required />
+            <span>I have read and accept the <a href="/en/terms" target="_blank" rel="noopener">Terms</a> and the <a href="/en/withdrawal" target="_blank" rel="noopener">Withdrawal Policy</a>.</span>
+          </label>
+          <label class="modal-check">
+            <input type="checkbox" id="buyWithdrawal" required />
+            <span>I expressly request that provision of access begins immediately. I understand that I lose my right of withdrawal once provision begins.</span>
+          </label>
+        </div>
 
         <div class="modal-error" id="buyError"></div>
 

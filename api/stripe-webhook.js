@@ -65,6 +65,9 @@ export default async function handler(req, res) {
       createdAt: new Date().toISOString(),
       source: `stripe:${session.id}`,
       stripeCustomerId: session.customer || null,
+      consentTerms: meta.consent_terms === 'true',
+      consentWithdrawal: meta.consent_withdrawal === 'true',
+      consentAt: meta.consent_at || null,
     });
 
     try {

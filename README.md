@@ -5,13 +5,13 @@ Cocktail-Roulette für die Bar. App + Landing + Bezahl-Pipeline.
 ## Struktur
 
 ```
-app/         App (Login + Roulette)              → /app
-api/         Vercel Serverless Functions         → /api/*
+index.html   Landing (DE)                         → /
+en/          Landing (EN)                         → /en
+app/         App (Login + Roulette)               → /app
+api/         Vercel Serverless Functions          → /api/*
 lib/         Shared backend helpers (kv, auth, hash)
 scripts/     Maintenance scripts (seed, …)
 ```
-
-PR 2 wird Landing unter `/` ergänzen, PR 3 die Stripe-Pipeline.
 
 ## Lokale Entwicklung
 
@@ -33,9 +33,9 @@ npm run dev                  # vercel dev — App auf http://localhost:3000/app
    node --env-file=.env.local scripts/seed.js
    ```
 
-## Bezahl-Pipeline (PR 3)
+## Bezahl-Pipeline
 
-1. **Stripe**: Konto + Product „Bibelstunde Lifetime" 49,99 € one-time → Price ID merken.
+1. **Stripe**: Konto + Product „Bibelstunde Lifetime" 9,99 € one-time → Price ID merken.
    ENV-Vars im Vercel-Projekt:
    - `STRIPE_SECRET_KEY` (sk_test_… / sk_live_…)
    - `STRIPE_PRICE_ID` (price_…)

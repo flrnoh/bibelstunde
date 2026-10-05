@@ -437,6 +437,43 @@ section { padding: clamp(60px, 10vh, 100px) 0; }
   flex-wrap: wrap;
 }
 
+/* === Legal pages (Impressum / Datenschutz) === */
+.legal {
+  padding: clamp(40px, 8vh, 80px) 0 clamp(60px, 10vh, 100px);
+}
+.legal .container { max-width: 760px; }
+.legal h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+.legal .legal-updated {
+  color: var(--muted);
+  font-size: 13.5px;
+  margin: 0 0 clamp(28px, 5vh, 44px);
+}
+.legal h2 {
+  font-size: clamp(19px, 2.4vw, 24px);
+  margin: clamp(32px, 5vh, 44px) 0 12px;
+}
+.legal h3 {
+  font-size: clamp(16px, 2vw, 18px);
+  margin: 24px 0 8px;
+}
+.legal p, .legal li { color: #cfcfcf; font-size: 15.5px; line-height: 1.7; }
+.legal ul { padding-left: 22px; margin: 10px 0; }
+.legal li { margin: 6px 0; }
+.legal a { color: var(--accent); }
+.legal .legal-note {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 20px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
 /* Buy modal */
 .modal {
   position: fixed;
